@@ -22,6 +22,10 @@ class Course
     #[ORM\Column]
     private ?int $createdAt = null;
 
+    #[ORM\ManyToOne(inversedBy: 'courses')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?CourseUser $author = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -59,6 +63,18 @@ class Course
     public function setCreatedAt(int $createdAt): static
     {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getAuthor(): ?CourseUser
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(?CourseUser $author): static
+    {
+        $this->author = $author;
 
         return $this;
     }
