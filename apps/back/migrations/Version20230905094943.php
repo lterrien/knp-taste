@@ -23,7 +23,7 @@ final class Version20230905094943 extends AbstractMigration
             'roles JSON NOT NULL, ' .
             'hashed_password VARCHAR(255) NOT NULL, ' .
             'username VARCHAR(180) NOT NULL, ' .
-            'views_count INT DEFAULT NULL, ' .
+            'views_count INT DEFAULT NOT NULL, ' .
             'last_view INT DEFAULT NULL, ' .
             'UNIQUE INDEX UNIQ_USER_EMAIL (email), ' .
             'UNIQUE INDEX UNIQ_USER_USERNAME (username), ' .
