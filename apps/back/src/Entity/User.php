@@ -4,15 +4,17 @@ namespace App\Entity;
 
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Types\UuidType;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-abstract class User implements UserInterface, PasswordAuthenticatedUserInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
-    #[ORM\Column]
-    private string $uuid = '';
+    #[ORM\Column(type: UuidType::NAME, unique: true)]
+    private ?Uuid $uuid = null;
 
     #[ORM\Column(length: 180, unique: true)]
     private string $email = '';
@@ -32,9 +34,16 @@ abstract class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(nullable: true)]
     private ?int $lastView = null;
 
-    public function getUuid(): string
+    public function getUuid(): ?Uuid
     {
         return $this->uuid;
+    }
+
+    public function setUuid(Uuid $uuid): static
+    {
+        $this->uuid = $uuid;
+
+        return $this;
     }
 
     public function getEmail(): string
@@ -91,6 +100,11 @@ abstract class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->hashedPassword = $hashedPassword;
 
         return $this;
+    }
+
+    public function getPassword(): ?string
+    {
+        return $this->getHashedPassword();
     }
 
     /**
