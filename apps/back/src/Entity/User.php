@@ -11,21 +11,20 @@ use Symfony\Component\Security\Core\User\UserInterface;
 abstract class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?string $uuid = null;
+    private string $uuid = '';
 
     #[ORM\Column(length: 180, unique: true)]
-    private ?string $email = null;
+    private string $email = '';
 
     #[ORM\Column]
     private array $roles = [];
 
     #[ORM\Column(length: 100)]
-    private ?string $hashedPassword = null;
+    private string $hashedPassword = '';
 
     #[ORM\Column(length: 180, unique: true)]
-    private ?string $username = null;
+    private string $username = '';
 
     #[ORM\Column(nullable: true)]
     private ?int $viewsCount = null;
@@ -33,7 +32,7 @@ abstract class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(nullable: true)]
     private ?int $lastView = null;
 
-    public function getUuid(): ?int
+    public function getUuid(): string
     {
         return $this->uuid;
     }
