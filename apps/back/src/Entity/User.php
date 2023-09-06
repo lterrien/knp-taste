@@ -2,17 +2,18 @@
 
 namespace App\Entity;
 
+use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-#[ORM\MappedSuperclass]
+#[ORM\Entity(repositoryClass: UserRepository::class)]
 abstract class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id = null;
+    private ?string $uuid = null;
 
     #[ORM\Column(length: 180, unique: true)]
     private ?string $email = null;
@@ -20,18 +21,21 @@ abstract class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private array $roles = [];
 
-    /**
-     * @var ?string The hashed password
-     */
-    #[ORM\Column]
-    private ?string $password = null;
+    #[ORM\Column(length: 100)]
+    private ?string $hashedPassword = null;
 
     #[ORM\Column(length: 180, unique: true)]
     private ?string $username = null;
 
-    public function getId(): ?int
+    #[ORM\Column(nullable: true)]
+    private ?int $viewsCount = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $lastView = null;
+
+    public function getUuid(): ?int
     {
-        return $this->id;
+        return $this->uuid;
     }
 
     public function getEmail(): ?string
@@ -78,14 +82,14 @@ abstract class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @see PasswordAuthenticatedUserInterface
      */
-    public function getPassword(): string
+    public function getHashedPassword(): string
     {
-        return $this->password;
+        return $this->hashedPassword;
     }
 
-    public function setPassword(string $password): static
+    public function setHashedPassword(string $hashedPassword): static
     {
-        $this->password = $password;
+        $this->hashedPassword = $hashedPassword;
 
         return $this;
     }
@@ -107,6 +111,30 @@ abstract class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setUsername(string $username): static
     {
         $this->username = $username;
+
+        return $this;
+    }
+
+    public function getViewsCount(): ?int
+    {
+        return $this->viewsCount;
+    }
+
+    public function setViewsCount(?int $viewsCount): static
+    {
+        $this->viewsCount = $viewsCount;
+
+        return $this;
+    }
+
+    public function getLastView(): ?int
+    {
+        return $this->lastView;
+    }
+
+    public function setLastView(?int $lastView): static
+    {
+        $this->lastView = $lastView;
 
         return $this;
     }
