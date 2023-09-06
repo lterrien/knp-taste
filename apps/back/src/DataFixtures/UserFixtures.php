@@ -2,11 +2,11 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\CourseUser;
+use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
-class CourseUserFixtures extends Fixture
+class UserFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
@@ -16,12 +16,12 @@ class CourseUserFixtures extends Fixture
 
         /* Foreach user, create user data and persist it */
         foreach ($courseUserData as $userData) {
-            $user = new CourseUser();
+            $user = new User();
 
             // User data related to security and profile
             $user->setUsername('user' . $i);
             $user->setEmail('user' . $i . '@knplabs.com');
-            $user->setPassword('password' . $i);
+            $user->setHashedPassword('password' . $i);
 
             // Define roles depending on if user is admin
             if($userData[0]) {
