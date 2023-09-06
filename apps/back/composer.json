@@ -16,8 +16,7 @@
         "symfony/yaml": "~6.3.0"
     },
     "require-dev": {
-        "ergebnis/composer-normalize": "*",
-        "symfony/maker-bundle": "^1.50"
+        "ergebnis/composer-normalize": "*"
     },
     "replace": {
         "symfony/polyfill-ctype": "*",
