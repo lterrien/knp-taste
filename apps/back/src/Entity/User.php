@@ -37,7 +37,7 @@ abstract class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->uuid;
     }
 
-    public function getEmail(): ?string
+    public function getEmail(): string
     {
         return $this->email;
     }
@@ -102,7 +102,7 @@ abstract class User implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 
-    public function getUsername(): ?string
+    public function getUsername(): string
     {
         return $this->username;
     }
