@@ -11,15 +11,15 @@
         "symfony/console": "~6.3.0",
         "symfony/dotenv": "~6.3.0",
         "symfony/flex": "^2",
-        "symfony/framework-bundle": "6.3.*",
-        "symfony/runtime": "6.3.*",
-        "symfony/security-bundle": "6.3.*",
-        "symfony/uid": "6.3.*",
-        "symfony/yaml": "6.3.*"
+        "symfony/framework-bundle": "~6.3.0",
+        "symfony/runtime": "~6.3.0",
+        "symfony/security-bundle": "~6.3.0",
+        "symfony/uid": "~6.3.0",
+        "symfony/yaml": "~6.3.0"
     },
     "require-dev": {
-        "ergebnis/composer-normalize": "*",
-        "doctrine/doctrine-fixtures-bundle": "^3.4"
+        "doctrine/doctrine-fixtures-bundle": "^3.4",
+        "ergebnis/composer-normalize": "*"
     },
     "replace": {
         "symfony/polyfill-ctype": "*",
@@ -71,4 +71,5 @@
             "cache:clear": "symfony-cmd",
             "assets:install %PUBLIC_DIR%": "symfony-cmd"
         }
+    }
 }
