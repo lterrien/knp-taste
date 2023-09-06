@@ -2,39 +2,51 @@
 
 namespace App\Entity;
 
+use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Types\UuidType;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Uid\Uuid;
 
-#[ORM\MappedSuperclass]
-abstract class User implements UserInterface, PasswordAuthenticatedUserInterface
+#[ORM\Entity(repositoryClass: UserRepository::class)]
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    #[ORM\Column(type: UuidType::NAME, unique: true)]
+    private ?Uuid $uuid = null;
 
     #[ORM\Column(length: 180, unique: true)]
-    private ?string $email = null;
+    private string $email = '';
 
     #[ORM\Column]
     private array $roles = [];
 
-    /**
-     * @var ?string The hashed password
-     */
-    #[ORM\Column]
-    private ?string $password = null;
+    #[ORM\Column(length: 100)]
+    private string $hashedPassword = '';
 
     #[ORM\Column(length: 180, unique: true)]
-    private ?string $username = null;
+    private string $username = '';
 
-    public function getId(): ?int
+    #[ORM\Column(nullable: true)]
+    private ?int $viewsCount = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $lastView = null;
+
+    public function getUuid(): ?Uuid
     {
-        return $this->id;
+        return $this->uuid;
     }
 
-    public function getEmail(): ?string
+    public function setUuid(Uuid $uuid): static
+    {
+        $this->uuid = $uuid;
+
+        return $this;
+    }
+
+    public function getEmail(): string
     {
         return $this->email;
     }
@@ -78,16 +90,21 @@ abstract class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @see PasswordAuthenticatedUserInterface
      */
-    public function getPassword(): string
+    public function getHashedPassword(): string
     {
-        return $this->password;
+        return $this->hashedPassword;
     }
 
-    public function setPassword(string $password): static
+    public function setHashedPassword(string $hashedPassword): static
     {
-        $this->password = $password;
+        $this->hashedPassword = $hashedPassword;
 
         return $this;
+    }
+
+    public function getPassword(): ?string
+    {
+        return $this->getHashedPassword();
     }
 
     /**
@@ -99,7 +116,7 @@ abstract class User implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 
-    public function getUsername(): ?string
+    public function getUsername(): string
     {
         return $this->username;
     }
@@ -107,6 +124,30 @@ abstract class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setUsername(string $username): static
     {
         $this->username = $username;
+
+        return $this;
+    }
+
+    public function getViewsCount(): ?int
+    {
+        return $this->viewsCount;
+    }
+
+    public function setViewsCount(?int $viewsCount): static
+    {
+        $this->viewsCount = $viewsCount;
+
+        return $this;
+    }
+
+    public function getLastView(): ?int
+    {
+        return $this->lastView;
+    }
+
+    public function setLastView(?int $lastView): static
+    {
+        $this->lastView = $lastView;
 
         return $this;
     }
