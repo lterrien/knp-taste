@@ -2,13 +2,12 @@
 
 namespace App\Entity;
 
-use App\Repository\CourseRepository;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Types\UuidType;
 use Symfony\Component\Uid\Uuid;
 
-#[ORM\Entity(repositoryClass: CourseRepository::class)]
+#[ORM\Entity]
 class Course
 {
     #[ORM\Id]
