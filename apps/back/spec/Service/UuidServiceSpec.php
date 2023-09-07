@@ -2,7 +2,7 @@
 
 namespace spec\App\Service;
 
-use App\Service\UuidService;
+use App\Service\Uuid\UuidService;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Uid\Factory\UuidFactory;
 use Symfony\Component\Uid\Uuid;

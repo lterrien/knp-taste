@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Service;
+namespace App\Service\Uuid;
 
 use Symfony\Component\Uid\Factory\UuidFactory;
 use Symfony\Component\Uid\Uuid;
 
-class UuidService
+class UuidService implements UuidServiceInterface
 {
     public function __construct(private readonly UuidFactory $uuidFactory) {
     }

@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
-use App\Service\UuidService;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Types\UuidType;
@@ -25,7 +24,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private array $roles = [];
 
     #[ORM\Column(length: 100)]
-    private string $hashedPassword;
+    private string $hashedPassword = '';
 
     #[ORM\Column(length: 180, unique: true)]
     private string $username;
@@ -36,11 +35,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: "datetime", nullable: true)]
     private ?DateTime $lastCourseViewDate = null;
 
-    public function __construct(UuidService $uuidService, string $email, string $hashedPassword, string $username)
+    public function __construct(Uuid $uuid, string $email, string $username)
     {
-        $this->uuid = $uuidService->generateUuid();
+        $this->uuid = $uuid;
         $this->email = $email;
-        $this->hashedPassword = $hashedPassword;
         $this->username = $username;
     }
 
