@@ -18,13 +18,13 @@ final class Version20230905094943 extends AbstractMigration
     {
         $this->addSql(
             'CREATE TABLE user (' .
-            'uuid VARCHAR(255) NOT NULL, ' .
+            'uuid BINARY(16) NOT NULL, ' .
             'email VARCHAR(180) NOT NULL, ' .
             'roles JSON NOT NULL, ' .
             'hashed_password VARCHAR(100) NOT NULL, ' .
             'username VARCHAR(180) NOT NULL, ' .
             'views_count INT NOT NULL, ' .
-            'last_view_course_date DATETIME DEFAULT NULL, ' .
+            'last_course_view_date DATETIME DEFAULT NULL, ' .
             'UNIQUE INDEX UNIQ_USER_EMAIL (email), ' .
             'UNIQUE INDEX UNIQ_USER_USERNAME (username), ' .
             'PRIMARY KEY(uuid)) ' .
