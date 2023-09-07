@@ -3,6 +3,7 @@
 namespace App\Service\Factory;
 
 use App\Entity\User;
+use App\Enum\UserRole;
 use App\Service\Uuid\UuidService;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
@@ -30,6 +31,7 @@ class UserFactory
         );
 
         $user->setHashedPassword($this->userPasswordHasher->hashPassword($user, $plainPassword));
+        $user->addRole(UserRole::RoleUser);
 
         return $user;
     }
