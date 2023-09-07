@@ -7,11 +7,10 @@ use Symfony\Component\Uid\Uuid;
 
 class UuidService
 {
-    public function __construct(private UuidFactory $uuidFactory) {
+    public function __construct(private readonly UuidFactory $uuidFactory) {
     }
 
     /**
-     * Generate a new uuid
      * @return Uuid
      */
     public function generateUuid(): Uuid
