@@ -21,10 +21,10 @@ final class Version20230905094943 extends AbstractMigration
             'uuid VARCHAR(255) NOT NULL, ' .
             'email VARCHAR(180) NOT NULL, ' .
             'roles JSON NOT NULL, ' .
-            'hashed_password VARCHAR(255) NOT NULL, ' .
+            'hashed_password VARCHAR(100) NOT NULL, ' .
             'username VARCHAR(180) NOT NULL, ' .
-            'views_count INT DEFAULT NOT NULL, ' .
-            'last_view INT DEFAULT NULL, ' .
+            'views_count INT NOT NULL, ' .
+            'last_view_course_date DATETIME DEFAULT NULL, ' .
             'UNIQUE INDEX UNIQ_USER_EMAIL (email), ' .
             'UNIQUE INDEX UNIQ_USER_USERNAME (username), ' .
             'PRIMARY KEY(uuid)) ' .
