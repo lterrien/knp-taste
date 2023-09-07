@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\App\Service;
+namespace spec\App\Service\Uuid;
 
 use App\Service\Uuid\UuidService;
 use PhpSpec\ObjectBehavior;
