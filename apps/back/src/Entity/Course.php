@@ -2,80 +2,37 @@
 
 namespace App\Entity;
 
-use App\Repository\CourseRepository;
+use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Types\UuidType;
+use Symfony\Component\Uid\Uuid;
 
-#[ORM\Entity(repositoryClass: CourseRepository::class)]
+#[ORM\Entity]
 class Course
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    #[ORM\Column(type: UuidType::NAME, unique: true)]
+    private Uuid $uuid;
 
     #[ORM\Column(length: 255)]
-    private ?string $name = null;
+    private string $name;
 
     #[ORM\Column(length: 255)]
-    private ?string $link = null;
+    private string $link;
 
     #[ORM\Column]
-    private ?int $createdAt = null;
+    private DateTimeImmutable $createdAt;
 
     #[ORM\ManyToOne(inversedBy: 'courses')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?CourseUser $author = null;
+    private User $author;
 
-    public function getId(): ?int
+    public function __construct(Uuid $uuid, string $name, string $link, User $author)
     {
-        return $this->id;
-    }
-
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    public function setName(string $name): static
-    {
+        $this->uuid = $uuid;
         $this->name = $name;
-
-        return $this;
-    }
-
-    public function getLink(): ?string
-    {
-        return $this->link;
-    }
-
-    public function setLink(string $link): static
-    {
         $this->link = $link;
-
-        return $this;
-    }
-
-    public function getCreatedAt(): ?int
-    {
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt(int $createdAt): static
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    public function getAuthor(): ?CourseUser
-    {
-        return $this->author;
-    }
-
-    public function setAuthor(?CourseUser $author): static
-    {
         $this->author = $author;
-
-        return $this;
+        $this->createdAt = new DateTimeImmutable();
     }
 }

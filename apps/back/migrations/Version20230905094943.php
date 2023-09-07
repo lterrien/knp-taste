@@ -11,16 +11,29 @@ final class Version20230905094943 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return '';
+        return 'User table creation';
     }
 
     public function up(Schema $schema): void
     {
-        $this->addSql('CREATE TABLE course_user (id INT AUTO_INCREMENT NOT NULL, email VARCHAR(180) NOT NULL, roles JSON NOT NULL, password VARCHAR(255) NOT NULL, username VARCHAR(180) NOT NULL, views_count INT DEFAULT NULL, last_view INT DEFAULT NULL, UNIQUE INDEX UNIQ_45310B4FE7927C74 (email), UNIQUE INDEX UNIQ_45310B4FF85E0677 (username), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql(
+            'CREATE TABLE user (' .
+            'uuid BINARY(16) NOT NULL, ' .
+            'email VARCHAR(180) NOT NULL, ' .
+            'roles JSON NOT NULL, ' .
+            'hashed_password VARCHAR(100) NOT NULL, ' .
+            'username VARCHAR(180) NOT NULL, ' .
+            'views_count INT NOT NULL, ' .
+            'last_course_view_date DATETIME DEFAULT NULL, ' .
+            'UNIQUE INDEX UNIQ_USER_EMAIL (email), ' .
+            'UNIQUE INDEX UNIQ_USER_USERNAME (username), ' .
+            'PRIMARY KEY(uuid)) ' .
+            'DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB'
+        );
     }
 
     public function down(Schema $schema): void
     {
-        $this->addSql('DROP TABLE course_user');
+        $this->addSql('DROP TABLE user');
     }
 }
