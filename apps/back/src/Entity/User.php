@@ -2,39 +2,53 @@
 
 namespace App\Entity;
 
+use App\Enum\UserRole;
+use App\Repository\UserRepository;
+use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Types\UuidType;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Uid\Uuid;
 
-#[ORM\MappedSuperclass]
-abstract class User implements UserInterface, PasswordAuthenticatedUserInterface
+#[ORM\Entity(repositoryClass: UserRepository::class)]
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    #[ORM\Column(type: UuidType::NAME, unique: true)]
+    private Uuid $uuid;
 
     #[ORM\Column(length: 180, unique: true)]
-    private ?string $email = null;
+    private string $email;
 
     #[ORM\Column]
     private array $roles = [];
 
-    /**
-     * @var ?string The hashed password
-     */
-    #[ORM\Column]
-    private ?string $password = null;
+    #[ORM\Column(length: 100)]
+    private string $hashedPassword = '';
 
     #[ORM\Column(length: 180, unique: true)]
-    private ?string $username = null;
+    private string $username;
 
-    public function getId(): ?int
+    #[ORM\Column(nullable: true)]
+    private int $viewsCount = 0;
+
+    #[ORM\Column(type: "datetime", nullable: true)]
+    private ?DateTimeImmutable $lastCourseViewDate = null;
+
+    public function __construct(Uuid $uuid, string $email, string $username)
     {
-        return $this->id;
+        $this->uuid = $uuid;
+        $this->email = $email;
+        $this->username = $username;
     }
 
-    public function getEmail(): ?string
+    public function getUuid(): ?Uuid
+    {
+        return $this->uuid;
+    }
+
+    public function getEmail(): string
     {
         return $this->email;
     }
@@ -53,7 +67,7 @@ abstract class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUserIdentifier(): string
     {
-        return (string) $this->email;
+        return $this->getEmail();
     }
 
     /**
@@ -61,11 +75,16 @@ abstract class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getRoles(): array
     {
-        $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
+        return $this->roles;
+    }
 
-        return array_unique($roles);
+    public function addRole(UserRole $role): static
+    {
+        if(!in_array($role, $this->roles)) {
+            $this->roles[] = $role;
+        }
+
+        return $this;
     }
 
     public function setRoles(array $roles): static
@@ -78,16 +97,21 @@ abstract class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @see PasswordAuthenticatedUserInterface
      */
-    public function getPassword(): string
+    public function getHashedPassword(): string
     {
-        return $this->password;
+        return $this->hashedPassword;
     }
 
-    public function setPassword(string $password): static
+    public function setHashedPassword(string $hashedPassword): static
     {
-        $this->password = $password;
+        $this->hashedPassword = $hashedPassword;
 
         return $this;
+    }
+
+    public function getPassword(): ?string
+    {
+        return $this->getHashedPassword();
     }
 
     /**
@@ -99,7 +123,7 @@ abstract class User implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 
-    public function getUsername(): ?string
+    public function getUsername(): string
     {
         return $this->username;
     }
@@ -107,6 +131,30 @@ abstract class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setUsername(string $username): static
     {
         $this->username = $username;
+
+        return $this;
+    }
+
+    public function getViewsCount(): int
+    {
+        return $this->viewsCount;
+    }
+
+    public function setViewsCount(int $viewsCount): static
+    {
+        $this->viewsCount = $viewsCount;
+
+        return $this;
+    }
+
+    public function getLastCourseViewDate(): ?DateTimeImmutable
+    {
+        return $this->lastCourseViewDate;
+    }
+
+    public function setLastCourseViewDate(?DateTimeImmutable $lastCourseViewDate): static
+    {
+        $this->lastCourseViewDate = $lastCourseViewDate;
 
         return $this;
     }
