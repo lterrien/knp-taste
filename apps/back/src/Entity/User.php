@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use App\Service\UuidService;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Types\UuidType;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -14,36 +15,37 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\Column(type: UuidType::NAME, unique: true)]
-    private ?Uuid $uuid = null;
+    private Uuid $uuid;
 
     #[ORM\Column(length: 180, unique: true)]
-    private string $email = '';
+    private string $email;
 
     #[ORM\Column]
     private array $roles = [];
 
     #[ORM\Column(length: 100)]
-    private string $hashedPassword = '';
+    private string $hashedPassword;
 
     #[ORM\Column(length: 180, unique: true)]
-    private string $username = '';
+    private string $username;
 
     #[ORM\Column(nullable: true)]
-    private ?int $viewsCount = null;
+    private int $viewsCount = 0;
 
     #[ORM\Column(nullable: true)]
-    private ?int $lastView = null;
+    private ?int $lastCourseViewDate = null;
+
+    public function __construct(UuidService $uuidService, string $email, string $hashedPassword, string $username)
+    {
+        $this->uuid = $uuidService->generateUuid();
+        $this->email = $email;
+        $this->hashedPassword = $hashedPassword;
+        $this->username = $username;
+    }
 
     public function getUuid(): ?Uuid
     {
         return $this->uuid;
-    }
-
-    public function setUuid(Uuid $uuid): static
-    {
-        $this->uuid = $uuid;
-
-        return $this;
     }
 
     public function getEmail(): string
@@ -65,7 +67,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUserIdentifier(): string
     {
-        return (string) $this->email;
+        return $this->getEmail();
     }
 
     /**
@@ -128,26 +130,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getViewsCount(): ?int
+    public function getViewsCount(): int
     {
         return $this->viewsCount;
     }
 
-    public function setViewsCount(?int $viewsCount): static
+    public function setViewsCount(int $viewsCount): static
     {
         $this->viewsCount = $viewsCount;
 
         return $this;
     }
 
-    public function getLastView(): ?int
+    public function getLastCourseViewDate(): ?int
     {
-        return $this->lastView;
+        return $this->lastCourseViewDate;
     }
 
-    public function setLastView(?int $lastView): static
+    public function setLastCourseViewDate(?int $lastCourseViewDate): static
     {
-        $this->lastView = $lastView;
+        $this->lastCourseViewDate = $lastCourseViewDate;
 
         return $this;
     }
