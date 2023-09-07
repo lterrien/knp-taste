@@ -3,7 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
-use DateTime;
+use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Types\UuidType;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -33,7 +33,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private int $viewsCount = 0;
 
     #[ORM\Column(type: "datetime", nullable: true)]
-    private ?DateTime $lastCourseViewDate = null;
+    private ?DateTimeImmutable $lastCourseViewDate = null;
 
     public function __construct(Uuid $uuid, string $email, string $username)
     {
@@ -141,12 +141,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getLastCourseViewDate(): ?DateTime
+    public function getLastCourseViewDate(): ?DateTimeImmutable
     {
         return $this->lastCourseViewDate;
     }
 
-    public function setLastCourseViewDate(?DateTime $lastCourseViewDate): static
+    public function setLastCourseViewDate(?DateTimeImmutable $lastCourseViewDate): static
     {
         $this->lastCourseViewDate = $lastCourseViewDate;
 
