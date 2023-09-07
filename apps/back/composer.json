@@ -19,7 +19,7 @@
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^3.4",
-        "ergebnis/composer-normalize": "*"
+        "ergebnis/composer-normalize": "*",
         "phpspec/phpspec": "^7.4"
     },
     "replace": {
