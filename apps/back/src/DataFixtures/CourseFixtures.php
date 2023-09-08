@@ -18,8 +18,9 @@ class CourseFixtures extends Fixture implements DependentFixtureInterface
 
     public function load(ObjectManager $manager): void
     {
-        /* Get admin users data from User fixtures */
         /**
+         * Get admin users data from User fixtures
+         *
          * @var User $admin1
          * @var User $admin2
          */
