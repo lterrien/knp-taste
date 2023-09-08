@@ -36,8 +36,28 @@ class Course
         $this->createdAt = new DateTimeImmutable();
     }
 
+    public function getUuid(): Uuid
+    {
+        return $this->uuid;
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function getLink(): string
+    {
+        return $this->link;
+    }
+
     public function setCreatedAt(DateTimeImmutable $createdAt): void
     {
         $this->createdAt = $createdAt;
+    }
+
+    public function getAuthor(): User
+    {
+        return $this->author;
     }
 }
