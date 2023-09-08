@@ -12,12 +12,6 @@ class CourseFactory
     {
     }
 
-    /**
-     * @param string $name
-     * @param string $link
-     * @param User $author
-     * @return Course
-     */
     public function getCourseInstance(string $name, string $link, User $author): Course
     {
         return new Course(
