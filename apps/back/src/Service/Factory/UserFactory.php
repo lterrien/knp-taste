@@ -16,12 +16,6 @@ class UserFactory
     {
     }
 
-    /**
-     * @param string $email
-     * @param string $plainPassword
-     * @param string $username
-     * @return User
-     */
     public function getUserInstance(string $email, string $plainPassword, string $username): User
     {
         $user = new User(
