@@ -2,37 +2,43 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Course;
-use App\Entity\CourseUser;
+use App\Entity\User;
+use App\Service\Factory\CourseFactory;
+use DateTimeImmutable;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
+use Exception;
 
 class CourseFixtures extends Fixture implements DependentFixtureInterface
 {
+    public function __construct(private readonly CourseFactory $courseFactory)
+    {
+    }
 
     public function load(ObjectManager $manager): void
     {
-        /* Get admin users data from CourseUser fixtures */
+        /* Get admin users data from User fixtures */
         /**
-         * @var CourseUser $admin1
-         * @var CourseUser $admin2
+         * @var User $admin1
+         * @var User $admin2
          */
         $admin1 = $this->getReference('user1');
         $admin2 = $this->getReference('user2');
 
         /* Create 20 courses */
-        for($i = 1; $i <= 20; $i++) {
-            $course = new Course();
-            $course->setName('Course ' . $i);
-            $course->setLink('link' . $i);
-            $course->setCreatedAt(strtotime('-' . $i . 'days'));
+        foreach(range(1, 20) as $i) {
+            $course = $this->courseFactory->getCourseInstance(
+                'Course ' . $i,
+                'link' . $i,
+                $i % 2 ? $admin1 : $admin2
+            );
 
-            // Set a user admin as author
-            if($i % 2 == 0) {
-                $course->setAuthor($admin1);
-            } else {
-                $course->setAuthor($admin2);
+            // Set custom created at date
+            try {
+                $course->setCreatedAt(new DateTimeImmutable('-' . $i . 'days'));
+            } catch (Exception) {
+                // If error, keep default created date already set in $course
             }
 
             $manager->persist($course);
@@ -44,7 +50,7 @@ class CourseFixtures extends Fixture implements DependentFixtureInterface
     public function getDependencies(): array
     {
         return [
-          CourseUserFixtures::class
+          UserFixtures::class
         ];
     }
 }

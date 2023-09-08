@@ -43,6 +43,10 @@ class UserFixtures extends Fixture
             $user->setLastCourseViewDate($userData[self::LAST_COURSE_VIEW_DATE]);
 
             $manager->persist($user);
+
+            // Add reference to get user in other fixture class
+            $this->addReference('user' . $i, $user);
+
             $i++;
         }
 

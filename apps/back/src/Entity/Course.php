@@ -23,8 +23,8 @@ class Course
     #[ORM\Column]
     private DateTimeImmutable $createdAt;
 
-    #[ORM\ManyToOne(inversedBy: 'courses')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(name: 'author_uuid', referencedColumnName: 'uuid', nullable: false)]
     private User $author;
 
     public function __construct(Uuid $uuid, string $name, string $link, User $author)
@@ -34,5 +34,10 @@ class Course
         $this->link = $link;
         $this->author = $author;
         $this->createdAt = new DateTimeImmutable();
+    }
+
+    public function setCreatedAt(DateTimeImmutable $createdAt): void
+    {
+        $this->createdAt = $createdAt;
     }
 }
