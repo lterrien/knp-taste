@@ -18,6 +18,7 @@
         "symfony/yaml": "~6.3.0"
     },
     "require-dev": {
+        "doctrine/doctrine-fixtures-bundle": "^3.4",
         "phpspec/phpspec": "^7.4"
     },
     "replace": {
