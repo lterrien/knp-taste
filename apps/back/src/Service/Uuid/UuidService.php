@@ -10,9 +10,6 @@ class UuidService implements UuidServiceInterface
     public function __construct(private readonly UuidFactory $uuidFactory) {
     }
 
-    /**
-     * @return Uuid
-     */
     public function generateUuid(): Uuid
     {
         return $this->uuidFactory->create();

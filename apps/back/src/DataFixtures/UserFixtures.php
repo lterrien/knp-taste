@@ -22,15 +22,14 @@ class UserFixtures extends Fixture
     {
         /* Get necessary data to create users (ex: is admin) */
         $courseUserData = self::getCourseUserData();
-        $i = 1;
 
         /* Foreach user, create user data and persist it */
-        foreach ($courseUserData as $userData) {
+        foreach ($courseUserData as $i => $userData) {
 
             $user = $this->userFactory->getUserInstance(
-                'user' . $i . '@knplabs.com',
-                'password' . $i,
-                'user' . $i
+                'user' . $i + 1 . '@knplabs.com',
+                'password' . $i + 1,
+                'user' . $i + 1
             );
 
             // Add admin role if user is admin
@@ -45,9 +44,7 @@ class UserFixtures extends Fixture
             $manager->persist($user);
 
             // Add reference to get user in other fixture class
-            $this->addReference('user' . $i, $user);
-
-            $i++;
+            $this->addReference('user' . $i + 1, $user);
         }
 
         $manager->flush();
